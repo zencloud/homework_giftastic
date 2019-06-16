@@ -12,20 +12,25 @@
 // App Data 
 const appData = {
 
-    navList: [
-        { searchValue: 'Thundercats', offset: 0 },
-        { searchValue: 'Darkwing Duck', offset: 0 },
-        { searchValue: 'Batman', offset: 0 },
-        { searchValue: 'Wonder Woman', offset: 0 },
-        { searchValue: 'The Flash', offset: 0 },
-        { searchValue: 'The Joker', offset: 0 },
-        { searchValue: 'Superman', offset: 0 },
-        { searchValue: 'Simpsons', offset: 0 },
-        { searchValue: 'American Dad', offset: 0 },
-        { searchValue: 'Kawaii', offset: 0 },
-        { searchValue: 'Rainbows', offset: 0 }
+    // Favorites List
+    favList: [],
+
+    // Current Navigation List
+    tagList: [
+        { tagValue: 'Thundercats', offset: 0 },
+        { tagValue: 'Darkwing Duck', offset: 0 },
+        { tagValue: 'Batman', offset: 0 },
+        { tagValue: 'Wonder Woman', offset: 0 },
+        { tagValue: 'The Flash', offset: 0 },
+        { tagValue: 'The Joker', offset: 0 },
+        { tagValue: 'Superman', offset: 0 },
+        { tagValue: 'Simpsons', offset: 0 },
+        { tagValue: 'American Dad', offset: 0 },
+        { tagValue: 'Kawaii', offset: 0 },
+        { tagValue: 'Rainbows', offset: 0 }
     ],
 
+    // Giphy API Information
     apiKey: 'ZXL2tDFcTteEYQwe3fJR5UiPtdq30QOT',
     apiSearch: 'Monkey',
     apiOffset: 0,
@@ -37,5 +42,5 @@ const appData = {
     }
 }
 
-
+app_initialize();
 app_render_navigation();

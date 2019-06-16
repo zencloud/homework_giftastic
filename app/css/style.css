@@ -148,6 +148,10 @@ input:focus {
     transition: max-height 0.2s ease-out;
 }
 
+.app_favorites_content {
+    padding: 20px;
+}
+
 
 /* Content */
 .app_content_container {
