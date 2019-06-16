@@ -40,19 +40,43 @@ hr {
 .wrapper {
     margin: 0 auto;
     margin-top: 20px;
-    width: 80%;
+    width: 70%;
 }
 
 .app_header_container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .app_nav_container {
     display: flex;
     justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 .app_nav_cell {
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 75px;
+    min-height: 30px;
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--c-dark);
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--c-white);
+    flex-grow: 1;
+}
+
+.app_nav_cell:hover {
+    background-color: var(--c-green);
+    cursor: pointer;
+}
+.app_nav_cell:focus {
+    outline: none;
 }
