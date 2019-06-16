@@ -4,25 +4,30 @@
 // App Data 
 const appData = {
 
+    navList: [
+        { searchValue: 'Thundercats', offset: 0 },
+        { searchValue: 'Underdog', offset: 0 },
+        { searchValue: 'Batman', offset: 0 },
+        { searchValue: 'Wonder Woman', offset: 0 },
+        { searchValue: 'The Flash', offset: 0 },
+        { searchValue: 'The Joker', offset: 0 },
+        { searchValue: 'Superman', offset: 0 },
+        { searchValue: 'Simpsons', offset: 0 },
+        { searchValue: 'American Dad', offset: 0 },
+        { searchValue: 'Kawaii', offset: 0 },
+        { searchValue: 'Rainbows', offset: 0 }
+    ],
+
     apiKey: 'ZXL2tDFcTteEYQwe3fJR5UiPtdq30QOT',
     apiSearch: 'Monkey',
+    apiOffset: 0,
     apiURL: function () {
         return `http://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}`
                 +`&q=${this.apiSearch}`
+                +`&offset=${this.apiOffset}`
                 +`&limit=5`;
     }
 }
 
-// Test Query
-$.get(appData.apiURL(), function(response){
 
-    for (let i = 0; i < 5; i++) {
-        let img = response.data[i].images.fixed_height.url; 
-        let myHTML = `
-            <div class="app_content_cell">
-                <img src="${img}">
-            </div>`;
-
-        $('main').append(myHTML);
-    }
-})
+app_render_navigation();
