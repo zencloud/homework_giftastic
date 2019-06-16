@@ -1,5 +1,7 @@
-/*  Main Site Style */
+/*  Main App Stylesheet */
 
+
+/* SiteWide */
 * {
     box-sizing: border-box;
 }
@@ -9,9 +11,9 @@
     --c-dark:   #282828;
     --c-white:  #ecf0f1;
     --c-green:  #26ad5e;
+    --c-orange: #e77e22;
     --c-dark-a: #3a4147;
 }
-
 
 html, body {
     width: 100%;
@@ -30,19 +32,25 @@ hr {
     background-color: var(--c-dark-a);
 }
 
+input:focus {
+    outline: none;
+}
+
+/* Top Frame Border */
 .app_border_top {
     width: 100%;
     height: 5px;
     background-color: var(--c-dark);
 }
 
-
+/* Main Containers */
 .wrapper {
     margin: 0 auto;
     margin-top: 20px;
     width: 70%;
 }
 
+/*  Header  */
 .app_header_container {
     display: flex;
     justify-content: space-between;
@@ -50,6 +58,53 @@ hr {
     flex-wrap: wrap;
 }
 
+.app_input_container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 30px;
+}
+
+.app_input_cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 50px;
+    width: 150px;
+    height: 30px;
+}
+
+.app_header_container input {
+    border: none;
+    width: 120px;;
+    height: 30px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+}
+
+#app_btn_input_submit {
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--c-green);
+    color: var(--c-white);
+    font-size: 18px;
+    padding-top: 4px;
+}
+
+#app_btn_input_submit:hover {
+    background-color: var(--c-orange);
+    cursor: pointer;
+}
+
+#app_btn_input_submit:focus {
+    outline: none;
+}
+
+/* Navigation */
 .app_nav_container {
     display: flex;
     justify-content: space-evenly;
@@ -77,6 +132,7 @@ hr {
     background-color: var(--c-green);
     cursor: pointer;
 }
+
 .app_nav_cell:focus {
     outline: none;
 }
