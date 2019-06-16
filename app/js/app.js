@@ -1,12 +1,20 @@
 // App Main JS
 
+/* App TODO
+
+- Add removeable navigation buttons
+- Save Navigation
+- Add Favorites
+- Remove from Favorites
+
+*/
 
 // App Data 
 const appData = {
 
     navList: [
         { searchValue: 'Thundercats', offset: 0 },
-        { searchValue: 'Underdog', offset: 0 },
+        { searchValue: 'Darkwing Duck', offset: 0 },
         { searchValue: 'Batman', offset: 0 },
         { searchValue: 'Wonder Woman', offset: 0 },
         { searchValue: 'The Flash', offset: 0 },
@@ -25,7 +33,7 @@ const appData = {
         return `http://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}`
                 +`&q=${this.apiSearch}`
                 +`&offset=${this.apiOffset}`
-                +`&limit=5`;
+                +`&limit=10`;
     }
 }
 
