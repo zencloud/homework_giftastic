@@ -1,15 +1,28 @@
+// App Main JS
 
 
-// Ajax setup
-let apiKey, apiURL;
-apiKey = 'Y064fSObyugIkHGsgpBbKtYy6JmTG1xW';
+// App Data 
+const appData = {
 
-// Normal Query
-// apiURL = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=${apiKey}`;
+    apiKey: 'ZXL2tDFcTteEYQwe3fJR5UiPtdq30QOT',
+    apiSearch: 'Monkey',
+    apiURL: function () {
+        return `http://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}`
+                +`&q=${this.apiSearch}`
+                +`&limit=5`;
+    }
+}
 
-// Filtered Query
-//apiURL = `https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=Hong+Kong&facet_field=day_of_week&facet=true&begin_date=20190612&api-key=${apiKey}`;
+// Test Query
+$.get(appData.apiURL(), function(response){
 
-$.get(apiURL, function(data) {
-    console.log(data);
-});
+    for (let i = 0; i < 5; i++) {
+        let img = response.data[i].images.fixed_height.url; 
+        let myHTML = `
+            <div class="app_content_cell">
+                <img src="${img}">
+            </div>`;
+
+        $('main').append(myHTML);
+    }
+})
