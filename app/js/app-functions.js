@@ -14,11 +14,22 @@ function app_initialize() {
     }
 
 }
+
+function app_nav_add() {
+
+    let inputField = $('#app_input_field');
+    let inputValue = inputField.val();
+    inputField.val('');
+    
+    appData.tagList.push({ tagValue: inputValue, offset: 0 });
+    app_render_navigation();
+}
+
 // Generates navigation
 function app_render_navigation() {
 
+    $('nav').empty();
     appData.tagList.forEach(function(value, index) {
-       
         let myHTML = `<button class="app_nav_cell" data-index="${index}" value="${value.tagValue}" onclick="app_get_images(this)">${value.tagValue}</button>`;
         $('nav').append(myHTML);        
     });
