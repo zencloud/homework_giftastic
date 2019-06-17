@@ -11,17 +11,21 @@ function app_initialize() {
     }
     else {
         appData.favList = JSON.parse(localStorage.getItem('dataListFavorites'));
+        appData.tagList = JSON.parse(localStorage.getItem('dataListTags'));
     }
 
 }
 
 function app_nav_add() {
-
+    
     let inputField = $('#app_input_field');
     let inputValue = inputField.val();
-    inputField.val('');
     
+    if (inputValue === '') { return null }
+    
+    inputField.val('');
     appData.tagList.push({ tagValue: inputValue, offset: 0 });
+    localStorage.setItem('dataListTags', JSON.stringify(appData.tagList));
     app_render_navigation();
 }
 
