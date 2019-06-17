@@ -44,3 +44,4 @@ const appData = {
 
 app_initialize();
 app_render_navigation();
+app_render_favorites();
