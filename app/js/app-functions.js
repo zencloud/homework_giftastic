@@ -28,15 +28,24 @@ function app_render_navigation() {
 // Send request to giphy to return images
 function app_get_images(value) {
     
+    // Get Tag Value
     appData.apiSearch = $(value).attr('value');
 
+    // Get offset value for API search, increase it.
     let index = parseInt($(value).attr('data-index'));
     appData.tagList[index].offset += 10;
     appData.apiOffset = appData.tagList[index].offset;
 
-    console.log(appData.apiOffset);
+    // New Tag Check
+    if (appData.lastTag !== appData.apiSearch) {
+        appData.lastTag = appData.apiSearch;
+        $('main').empty();
+        appData.tagList[index].offset = 0;
+        appData.apiOffset = appData.tagList[index].offset;
+    }
 
-    // Test Query
+    // Request images from GIPHY
+    // Push to dom
     $.get(appData.apiURL(), function(response){
 
         for (let i = 0; i < 10; i++) {

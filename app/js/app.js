@@ -39,9 +39,14 @@ const appData = {
                 +`&q=${this.apiSearch}`
                 +`&offset=${this.apiOffset}`
                 +`&limit=10`;
-    }
+    },
+
+    // General App Variables
+    lastTag: ''
 }
 
+
+// Fresh loading of app
 app_initialize();
 app_render_navigation();
 app_render_favorites();
