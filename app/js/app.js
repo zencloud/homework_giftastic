@@ -35,7 +35,7 @@ const appData = {
     apiSearch: 'Monkey',
     apiOffset: 0,
     apiURL: function () {
-        return `http://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}`
+        return `https://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}`
                 +`&q=${this.apiSearch}`
                 +`&offset=${this.apiOffset}`
                 +`&limit=10`;
