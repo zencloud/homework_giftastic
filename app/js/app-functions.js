@@ -1,7 +1,7 @@
 // Main App Functions
 
 
-// Initialization of App
+// App: Initialization. Setup save data.
 function app_initialize() {
 
     // Check if user has been here before
@@ -9,40 +9,47 @@ function app_initialize() {
         localStorage.setItem('dataListFavorites', JSON.stringify(appData.favList));
         localStorage.setItem('dataListTags', JSON.stringify(appData.tagList));
     }
+
+    // User has been here, load favorites and tag list.
     else {
         appData.favList = JSON.parse(localStorage.getItem('dataListFavorites'));
         appData.tagList = JSON.parse(localStorage.getItem('dataListTags'));
     }
 
+    // Create listener for "ENTER"
+    $("#app_input_field").on('keyup', function (e) {
+        if (e.keyCode == 13) {
+            app_nav_add();
+        }
+    });
 }
 
+// Navigation: Attempt to add new custom tag
 function app_nav_add() {
-    
     let inputField = $('#app_input_field');
     let inputValue = inputField.val();
-    
+
     if (inputValue === '') { return null }
-    
+
     inputField.val('');
     appData.tagList.push({ tagValue: inputValue, offset: 0 });
     localStorage.setItem('dataListTags', JSON.stringify(appData.tagList));
     app_render_navigation();
 }
 
-// Generates navigation
+// Navigation: Render all tags
 function app_render_navigation() {
 
     $('nav').empty();
-    appData.tagList.forEach(function(value, index) {
+    appData.tagList.forEach(function (value, index) {
         let myHTML = `<button class="app_nav_cell" data-index="${index}" value="${value.tagValue}" onclick="app_get_images(this)">${value.tagValue}</button>`;
-        $('nav').append(myHTML);        
+        $('nav').append(myHTML);
     });
 }
 
-
-// Send request to giphy to return images
+// AJAX: Request data from GIPHY
 function app_get_images(value) {
-    
+
     // Get Tag Value
     appData.apiSearch = $(value).attr('value');
 
@@ -61,11 +68,11 @@ function app_get_images(value) {
 
     // Request images from GIPHY
     // Push to dom
-    $.get(appData.apiURL(), function(response){
+    $.get(appData.apiURL(), function (response) {
 
         for (let i = 0; i < 10; i++) {
             let imgSource = response.data[i].images.fixed_height_small.url;
-            let imgURL    = response.data[i].embed_url;
+            let imgURL = response.data[i].embed_url;
             let myHTML = `
                 <div class="app_content_cell fade-in">
                     <div class="app_content_cell_options" onclick="app_fav_add(this)">
@@ -80,13 +87,14 @@ function app_get_images(value) {
 }
 
 
+// Favorites: Render prepended favorite images to the favorites container
 function app_render_favorites() {
 
     $('.app_favorites_content').empty();
 
     for (let i = 0; i < appData.favList.length; i++) {
         let imgSource = appData.favList[i].imgURL;
-        let imgURL    = appData.favList[i].imgEmbed;
+        let imgURL = appData.favList[i].imgEmbed;
         let myHTML = `
             <div class="app_content_cell app_favorites_cell fade-in">
                 <div class="app_content_cell_options" onclick="app_fav_remove(this, ${i})">
@@ -99,11 +107,14 @@ function app_render_favorites() {
     }
 }
 
+
+// Favorites: Render the latest favorite and append to list
+//            This is done when you add a new favorites
 function app_render_favorites_append() {
-        let i = appData.favList.length-1;
-        let imgSource = appData.favList[i].imgURL;
-        let imgURL    = appData.favList[i].imgEmbed;
-        let myHTML = `
+    let i = appData.favList.length - 1;
+    let imgSource = appData.favList[i].imgURL;
+    let imgURL = appData.favList[i].imgEmbed;
+    let myHTML = `
             <div class="app_content_cell app_favorites_cell fade-in">
                 <div class="app_content_cell_options" onclick="app_fav_remove(this, ${i})">
                     <i class="fas fa-times"></i>
@@ -111,18 +122,19 @@ function app_render_favorites_append() {
                 <img data-imgurl="${imgURL}" class="fade-in-fwd" src="${imgURL}">
             </div>`;
 
-        $('.app_favorites_content').append(myHTML);
+    $('.app_favorites_content').append(myHTML);
 }
 
-// Toggle Favorites Panel
+// Favorites: Toggle Visibility
 function app_toggle_favorites() {
 
     // Get container
     let favDiv = $('.app_favorites_container');
-    
+    let scrollHeight = favDiv[0].scrollHeight+'px';
+
     // Swap CSS heights to open/close 
     if (favDiv.css('max-height') === '0px') {
-        favDiv.css('max-height', '2000px');
+        favDiv.css('max-height', scrollHeight);
     }
 
     if (favDiv.css('max-height') !== '0px') {
@@ -130,25 +142,44 @@ function app_toggle_favorites() {
     }
 }
 
-
+// Favorites: Remove item from list
 function app_fav_remove(cell, index) {
     $(cell).parent().remove();
     appData.favList.splice(index, 1);
     console.table(appData.favList);
     localStorage.setItem('dataListFavorites', JSON.stringify(appData.favList));
 }
+
+// Favorites: Add new item to list
 function app_fav_add(imgCell) {
-    
+
+    fx_render_heart(imgCell);
+
     // Setup image data sources
     let imgData = $(imgCell).parent().children('img');
     let url = imgData.attr('data-imgurl');
     let src = imgData.attr('src');
-    
+
     // Push to array and save to local storage
-    let imgObj = {imgURL: url, imgEmbed: src}
+    let imgObj = { imgURL: url, imgEmbed: src }
     appData.favList.push(imgObj);
     localStorage.setItem('dataListFavorites', JSON.stringify(appData.favList));
 
-    // Re-render favorites
+    // Append latest favorites entry inside fav container
     app_render_favorites_append();
+}
+
+function fx_render_heart(imgCell) {
+
+    let heartElement = $(imgCell).children('.fas');
+    let xx = Math.floor(heartElement.offset().left - (heartElement.width()/2));
+    let yy = Math.floor(heartElement.offset().top - (heartElement.height()/2));
+
+    let myHTML = $(`<div id="fx-icon-heart" class="fx-heart"><i class="fas fa-heart"></i></div>`);
+    //myDIV.offset( { top: yy, left: xx});
+    myHTML.css('position', 'absolute');
+    myHTML.css('top', yy);
+    myHTML.css('left', xx);
+
+    $('body').append(myHTML);
 }
