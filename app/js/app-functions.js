@@ -153,8 +153,9 @@ function app_fav_remove(cell, index) {
 // Favorites: Add new item to list
 function app_fav_add(imgCell) {
 
-    fx_render_heart(imgCell);
-
+    console.log($(imgCell).parent());
+    $(imgCell).parent().css('backgroundColor', '#26ad5e');
+    $(imgCell).children('.fas').css('color', '#26ad5e');
     // Setup image data sources
     let imgData = $(imgCell).parent().children('img');
     let url = imgData.attr('data-imgurl');
@@ -168,6 +169,11 @@ function app_fav_add(imgCell) {
     // Append latest favorites entry inside fav container
     app_render_favorites_append();
 }
+
+// ------------------------------
+// !!! Experimental function
+// ------------------------------
+
 
 function fx_render_heart(imgCell) {
 
