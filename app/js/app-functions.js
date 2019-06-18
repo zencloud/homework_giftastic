@@ -81,6 +81,14 @@ function app_get_images(value) {
                     <img data-imgurl="${imgURL}" class="fade-in-fwd" src="${imgSource}">
                 </div>`;
 
+
+            // Check if image is in favorites
+            if (appData.favList.includes(imgSource)) {
+
+                myHTML = $(myHTML);
+                myHTML.css('backgroundColor', '#26ad5e');
+                myHTML.children().children('.fas').css('color', '#26ad5e');
+            }
             $('main').prepend(myHTML);
         }
     });
@@ -93,16 +101,16 @@ function app_render_favorites() {
     $('.app_favorites_content').empty();
 
     for (let i = 0; i < appData.favList.length; i++) {
-        let imgSource = appData.favList[i].imgURL;
-        let imgURL = appData.favList[i].imgEmbed;
+        let imgSource = appData.favList[i];
         let myHTML = `
             <div class="app_content_cell app_favorites_cell fade-in">
                 <div class="app_content_cell_options" onclick="app_fav_remove(this, ${i})">
                     <i class="fas fa-times"></i>
                 </div>
-                <img data-imgurl="${imgURL}" class="fade-in-fwd" src="${imgURL}">
+                <img class="fade-in-fwd" src="${imgSource}">
             </div>`;
 
+        // Append Favorite
         $('.app_favorites_content').prepend(myHTML);
     }
 }
@@ -112,14 +120,14 @@ function app_render_favorites() {
 //            This is done when you add a new favorites
 function app_render_favorites_append() {
     let i = appData.favList.length - 1;
-    let imgSource = appData.favList[i].imgURL;
-    let imgURL = appData.favList[i].imgEmbed;
+    let imgSource = appData.favList[i]
+    //let imgURL = appData.favList[i].imgEmbed;
     let myHTML = `
             <div class="app_content_cell app_favorites_cell fade-in">
                 <div class="app_content_cell_options" onclick="app_fav_remove(this, ${i})">
                     <i class="fas fa-times"></i>
                 </div>
-                <img data-imgurl="${imgURL}" class="fade-in-fwd" src="${imgURL}">
+                <img class="fade-in-fwd" src="${imgSource}">
             </div>`;
 
     $('.app_favorites_content').append(myHTML);
@@ -153,17 +161,18 @@ function app_fav_remove(cell, index) {
 // Favorites: Add new item to list
 function app_fav_add(imgCell) {
 
-    console.log($(imgCell).parent());
+
     $(imgCell).parent().css('backgroundColor', '#26ad5e');
-    $(imgCell).children('.fas').css('color', '#26ad5e');
+    $(imgCell).children('.fas').css('color', '#26ad5e')
+    
     // Setup image data sources
     let imgData = $(imgCell).parent().children('img');
-    let url = imgData.attr('data-imgurl');
+    //let src = imgData.attr('data-imgurl');
     let src = imgData.attr('src');
 
     // Push to array and save to local storage
-    let imgObj = { imgURL: url, imgEmbed: src }
-    appData.favList.push(imgObj);
+    //let imgObj = { imgURL: url, imgEmbed: src }
+    appData.favList.push(src);
     localStorage.setItem('dataListFavorites', JSON.stringify(appData.favList));
 
     // Append latest favorites entry inside fav container
