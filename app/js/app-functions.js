@@ -72,13 +72,15 @@ function app_get_images(value) {
 
         for (let i = 0; i < 10; i++) {
             let imgSource = response.data[i].images.fixed_height_small.url;
-            let imgURL = response.data[i].embed_url;
+            let imgStill = response.data[i].images.fixed_height_small_still.url;
+
+            //let imgURL = response.data[i].embed_url;2
             let myHTML = `
                 <div class="app_content_cell fade-in">
                     <div class="app_content_cell_options" onclick="app_fav_add(this)">
                         <i class="fas fa-heart"></i>
                     </div>
-                    <img data-imgurl="${imgURL}" class="fade-in-fwd" src="${imgSource}">
+                    <img data-state="still" data-fav="${imgSource}" data-swap="${imgSource}" class="fade-in-fwd" src="${imgStill}" onclick="app_image_swap_state(this)">
                 </div>`;
 
 
@@ -94,6 +96,27 @@ function app_get_images(value) {
     });
 }
 
+function app_image_swap_state(img) {
+
+    // Detect and swap
+    switch ($(img).attr('data-state')) {
+
+        case "still":
+            $(img).attr('data-state', "animated");
+            break;
+
+        case "animated":
+            $(img).attr('data-state', "still");
+            break;
+    }
+
+    let imgOld = $(img).attr('src');
+    let imgNew = $(img).attr('data-swap');
+
+    // Swap States
+    $(img).attr('src', imgNew);
+    $(img).attr('data-swap', imgOld);
+}
 
 // Favorites: Render prepended favorite images to the favorites container
 function app_render_favorites() {
@@ -131,6 +154,21 @@ function app_render_favorites_append() {
             </div>`;
 
     $('.app_favorites_content').append(myHTML);
+
+    // Update Favorites Container Size
+    app_favorites_update_size();
+
+}
+
+function app_favorites_update_size() {
+    setTimeout(() => {
+
+        let favDiv = $('.app_favorites_container');
+        let scrollHeight = favDiv[0].scrollHeight + 'px';
+        if (favDiv.css('max-height') !== '0px') {
+            favDiv.css('max-height', scrollHeight);
+        }
+    }, 50);
 }
 
 // Favorites: Toggle Visibility
@@ -138,7 +176,7 @@ function app_toggle_favorites() {
 
     // Get container
     let favDiv = $('.app_favorites_container');
-    let scrollHeight = favDiv[0].scrollHeight+'px';
+    let scrollHeight = favDiv[0].scrollHeight + 'px';
 
     // Swap CSS heights to open/close 
     if (favDiv.css('max-height') === '0px') {
@@ -154,24 +192,27 @@ function app_toggle_favorites() {
 function app_fav_remove(cell, index) {
     $(cell).parent().remove();
     appData.favList.splice(index, 1);
-    console.table(appData.favList);
     localStorage.setItem('dataListFavorites', JSON.stringify(appData.favList));
+
+    // Update Favorites Container Size
+    app_favorites_update_size();
 }
 
 // Favorites: Add new item to list
 function app_fav_add(imgCell) {
 
 
-    $(imgCell).parent().css('backgroundColor', '#26ad5e');
-    $(imgCell).children('.fas').css('color', '#26ad5e')
-    
     // Setup image data sources
     let imgData = $(imgCell).parent().children('img');
-    //let src = imgData.attr('data-imgurl');
-    let src = imgData.attr('src');
+    let src = imgData.attr('data-fav');
+
+    if (appData.favList.includes(src)) { return null }
+
+    // Change outline/heart color to green
+    $(imgCell).parent().css('backgroundColor', '#26ad5e');
+    $(imgCell).children('.fas').css('color', '#26ad5e')
 
     // Push to array and save to local storage
-    //let imgObj = { imgURL: url, imgEmbed: src }
     appData.favList.push(src);
     localStorage.setItem('dataListFavorites', JSON.stringify(appData.favList));
 
@@ -179,22 +220,22 @@ function app_fav_add(imgCell) {
     app_render_favorites_append();
 }
 
-// ------------------------------
-// !!! Experimental function
-// ------------------------------
+// ----------------------------------------
+// !!! Experimental function incomplete !!!
+// ----------------------------------------
 
 
-function fx_render_heart(imgCell) {
+// function fx_render_heart(imgCell) {
 
-    let heartElement = $(imgCell).children('.fas');
-    let xx = Math.floor(heartElement.offset().left - (heartElement.width()/2));
-    let yy = Math.floor(heartElement.offset().top - (heartElement.height()/2));
+//     let heartElement = $(imgCell).children('.fas');
+//     let xx = Math.floor(heartElement.offset().left - (heartElement.width()/2));
+//     let yy = Math.floor(heartElement.offset().top - (heartElement.height()/2));
 
-    let myHTML = $(`<div id="fx-icon-heart" class="fx-heart"><i class="fas fa-heart"></i></div>`);
-    //myDIV.offset( { top: yy, left: xx});
-    myHTML.css('position', 'absolute');
-    myHTML.css('top', yy);
-    myHTML.css('left', xx);
+//     let myHTML = $(`<div id="fx-icon-heart" class="fx-heart"><i class="fas fa-heart"></i></div>`);
+//     //myDIV.offset( { top: yy, left: xx});
+//     myHTML.css('position', 'absolute');
+//     myHTML.css('top', yy);
+//     myHTML.css('left', xx);
 
-    $('body').append(myHTML);
-}
+//     $('body').append(myHTML);
+// }

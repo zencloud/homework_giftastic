@@ -216,6 +216,12 @@ input:focus {
     height: 100%;
 }
 
+.app_intro_container {
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+}
+
 
 
 /* Animation */
