@@ -32,7 +32,7 @@ function app_nav_add() {
     if (inputValue === '') { return null }
 
     inputField.val('');
-    appData.tagList.push({ tagValue: inputValue, offset: 0 });
+    appData.tagList.push(inputValue);
     localStorage.setItem('dataListTags', JSON.stringify(appData.tagList));
     app_render_navigation();
 }
@@ -42,9 +42,21 @@ function app_render_navigation() {
 
     $('nav').empty();
     appData.tagList.forEach(function (value, index) {
-        let myHTML = `<button class="app_nav_cell" data-index="${index}" value="${value.tagValue}" onclick="app_get_images(this)">${value.tagValue}</button>`;
+        let myHTML = `<button class="app_nav_cell" data-index="${index}" value="${appData.tagList[index]}" oncontextmenu="app_nav_remove(this)" onclick="app_get_images(this)">${appData.tagList[index]}</button>`;
         $('nav').append(myHTML);
     });
+}
+
+function app_nav_remove(thisBtn) {
+
+    event.preventDefault();
+
+    let btn = $(thisBtn);
+    let index = btn.attr('data-index');
+    let newArray = appData.tagList.splice(index, 1);
+    localStorage.setItem('dataListTags', JSON.stringify(appData.tagList));
+    btn.remove();
+
 }
 
 // AJAX: Request data from GIPHY
@@ -55,26 +67,22 @@ function app_get_images(value) {
 
     // Get offset value for API search, increase it.
     let index = parseInt($(value).attr('data-index'));
-    appData.tagList[index].offset += 10;
-    appData.apiOffset = appData.tagList[index].offset;
 
     // New Tag Check
     if (appData.lastTag !== appData.apiSearch) {
         appData.lastTag = appData.apiSearch;
         $('main').empty();
-        appData.tagList[index].offset = 0;
-        appData.apiOffset = appData.tagList[index].offset;
+        appData.apiOffset = 0;
     }
 
-    // Request images from GIPHY
-    // Push to dom
+    // Request images from GIPHY and push to DOM
     $.get(appData.apiURL(), function (response) {
 
+        // Loop through response results write html template
         for (let i = 0; i < 10; i++) {
             let imgSource = response.data[i].images.fixed_height_small.url;
             let imgStill = response.data[i].images.fixed_height_small_still.url;
 
-            //let imgURL = response.data[i].embed_url;2
             let myHTML = `
                 <div class="app_content_cell fade-in">
                     <div class="app_content_cell_options" onclick="app_fav_add(this)">
@@ -84,15 +92,20 @@ function app_get_images(value) {
                 </div>`;
 
 
-            // Check if image is in favorites
+            // Check if image is in favorites and highlight
             if (appData.favList.includes(imgSource)) {
 
                 myHTML = $(myHTML);
                 myHTML.css('backgroundColor', '#26ad5e');
                 myHTML.children().children('.fas').css('color', '#26ad5e');
             }
+
+            // Add to the dom
             $('main').prepend(myHTML);
         }
+
+        // Increase tag search offset
+        appData.apiOffset += 10;
     });
 }
 
@@ -200,7 +213,6 @@ function app_fav_remove(cell, index) {
 
 // Favorites: Add new item to list
 function app_fav_add(imgCell) {
-
 
     // Setup image data sources
     let imgData = $(imgCell).parent().children('img');

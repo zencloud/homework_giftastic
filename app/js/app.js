@@ -17,17 +17,17 @@ const appData = {
 
     // Current Navigation List
     tagList: [
-        { tagValue: 'Thundercats', offset: 0 },
-        { tagValue: 'Darkwing Duck', offset: 0 },
-        { tagValue: 'Batman', offset: 0 },
-        { tagValue: 'Wonder Woman', offset: 0 },
-        { tagValue: 'The Flash', offset: 0 },
-        { tagValue: 'The Joker', offset: 0 },
-        { tagValue: 'Superman', offset: 0 },
-        { tagValue: 'Simpsons', offset: 0 },
-        { tagValue: 'American Dad', offset: 0 },
-        { tagValue: 'Kawaii', offset: 0 },
-        { tagValue: 'Rainbows', offset: 0 }
+        'Thundercats',
+        'Darkwing Duck',
+        'Batman',
+        'Wonder Woman',
+        'The Flash',
+        'The Joker',
+        'Superman',
+        'Simpsons',
+        'American Dad',
+        'Kawaii',
+        'Rainbows'
     ],
 
     // Giphy API Information
