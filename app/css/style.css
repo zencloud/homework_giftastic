@@ -130,6 +130,27 @@ input:focus {
     outline: none;
 }
 
+#app_btn_reset_all {
+    margin-left: 5px;
+    width: auto;
+    height: 35px;
+    border: none;
+    border-radius: 20px;
+    background-color: #700a18;
+    color: var(--c-white);
+    font-size: 14px;
+    padding: 5px 15px 5px 15px;
+}
+
+#app_btn_reset_all:hover {
+    cursor: pointer;
+    background-color: #cc283e;
+}
+
+#app_btn_reset_all:focus {
+    outline: none;
+}
+
 #app_btn_input_submit {
     margin-left: 5px;
     width: 30px;
