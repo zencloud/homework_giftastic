@@ -323,3 +323,17 @@ input:focus {
         opacity: 1;
     }
 }
+
+
+
+/* Responsive Adjustment */
+
+@media only screen and (max-width: 660px) {
+
+    .app_header_container {
+        display: flex;
+        justify-content: space-around;
+        line-height: 30px;
+    }
+
+}   
